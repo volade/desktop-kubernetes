@@ -1,0 +1,134 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: desktop
+  labels:
+    app: desktop
+  annotations:
+    "staticegressips.nirmata.io/use-for-egress": "static-egress-ip"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: desktop
+  template:
+    metadata:
+      labels:
+        app: desktop
+    spec:
+      containers:
+      - name: desktop
+        image: volade/desktop:latest
+        imagePullPolicy: Always
+        ports:
+        - name: vnc0
+          containerPort: 5900
+        - name: vnc1
+          containerPort: 5901
+        - name: vnc2
+          containerPort: 5902
+        - name: vnc3
+          containerPort: 5903
+        - name: jenkins
+          containerPort: 8888
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            ephemeral-storage: "1Gi"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: desktop
+spec:
+  selector:
+    app: desktop
+  type: ClusterIP
+  ports:
+  - name: http0
+    port: 5900
+    targetPort: vnc0
+  - name: http1
+    port: 5901
+    targetPort: vnc1
+  - name: http2
+    port: 5902
+    targetPort: vnc2
+  - name: http3
+    port: 5903
+    targetPort: vnc3
+  externalIPs:
+  - 104.197.203.64
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: novnc
+  labels:
+    app: desktop
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: desktop
+  template:
+    metadata:
+      labels:
+        app: desktop
+    spec:
+      containers:
+      - name: novnc
+        image: volade/novnc:v4
+        ports:
+        - name: novnc0
+          containerPort: 8080
+        - name: novnc1
+          containerPort: 8081
+        - name: novnc2
+          containerPort: 8082
+        - name: novnc3
+          containerPort: 8083
+        resources:
+          requests:
+            ephemeral-storage: "100Mi"
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: novnc
+spec:
+  type: NodePort
+  selector:
+    app: desktop
+  ports:
+  - name: novnc0 
+    nodePort: 30000
+    port: 80
+    targetPort: novnc0
+  - name: novnc1
+    nodePort: 30001
+    port: 81
+    targetPort: novnc1
+  - name: novnc2
+    nodePort: 30002
+    port: 82
+    targetPort: novnc2
+  - name: novnc3
+    nodePort: 30003
+    port: 83
+    targetPort: novnc3
+  - name: jenkins
+    nodePort: 30888
+    port: 8888
+    targetPort: jenkins
+  externalIPs:
+    - 34.75.250.107
+

@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: desktop
+  labels:
+    app: desktop
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: desktop
+  template:
+    metadata:
+      labels:
+        app: desktop
+    spec:
+      containers:
+      - name: desktop
+        image: volade/desktop:latest
+        imagePullPolicy: Always
+        ports:
+        - name: vnc0
+          containerPort: 5900
+        - name: vnc1  
+          containerPort: 5901
+        - name: vnc2  
+          containerPort: 5902
+        - name: vnc3  
+          containerPort: 5903
+        - name: jenkins
+          containerPort: 8888
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            ephemeral-storage: "1Gi"
+      - name: novnc
+        image: volade/novnc:v3
+        ports:
+        - name: novnc0
+          containerPort: 8080
+        - name: novnc1
+          containerPort: 8081
+        - name: novnc2
+          containerPort: 8082
+        - name: novnc3
+          containerPort: 8083
+        resources:
+          requests:
+            ephemeral-storage: "100Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: desktop
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 34.75.250.107
+  externalIPs: 
+  - 34.75.250.107
+  selector:
+    app: desktop
+  ports:
+  - name: novnc0 
+    port: 80
+    targetPort: novnc0
+  - name: novnc1
+    port: 81
+    targetPort: novnc1
+  - name: novnc2
+    port: 82
+    targetPort: novnc2
+  - name: novnc3
+    port: 83
+    targetPort: novnc3
+  - name: jenkins
+    port: 8888
+    targetPort: jenkins

@@ -1,0 +1,36 @@
+kind: PersistentVolume
+apiVersion: v1 
+metadata:
+  name: desktop-pv 
+spec:
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-storage 
+  local: 
+   path: /mnt/work-related
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - desktop
+  capacity: 
+   storage: 1Gi
+  volumeMode: Filesystem
+  accessModes: 
+   - ReadWriteMany 
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: desktop-pvc
+spec: 
+  volumeName: desktop-pv
+  storageClassName: local-storage
+  resources:
+    requests: 
+      storage: 1Gi
+  accessModes:
+    - ReadWriteMany

@@ -1,0 +1,9 @@
+apiVersion: staticegressips.nirmata.io/v1alpha1
+kind: StaticEgressIP
+metadata:
+  name: static-egress-ip
+spec:
+  rules:
+  - egressip: 104.197.203.64
+    service-name: ""
+    cidr: 0.0.0.0/0
