@@ -87,4 +87,4 @@ spec:
     port: 8888
     targetPort: jenkins
   externalIPs:
-    - 34.75.250.107
+    - 104.197.203.64

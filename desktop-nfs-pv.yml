@@ -5,8 +5,6 @@ metadata:
 spec:
   persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage 
-  local: 
-   path: /mnt/work-related
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -20,6 +18,9 @@ spec:
   volumeMode: Filesystem
   accessModes: 
    - ReadWriteMany
+  nfs:
+    path: /mnt/work-related
+    server: 104.197.203.64
 
 ---
 kind: PersistentVolumeClaim

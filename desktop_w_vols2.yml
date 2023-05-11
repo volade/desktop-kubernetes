@@ -4,8 +4,6 @@ metadata:
   name: desktop
   labels:
     app: desktop
-  annotations:
-    "staticegressips.nirmata.io/use-for-egress": "static-egress-ip"
 spec:
   replicas: 2
   selector:
@@ -16,6 +14,10 @@ spec:
       labels:
         app: desktop
     spec:
+      volumes:
+      - name: desktop-pv
+        persistentVolumeClaim:
+          claimName: desktop-pvc
       containers:
       - name: desktop
         image: volade/desktop:latest
@@ -36,6 +38,9 @@ spec:
         resources:
           requests:
             ephemeral-storage: "1Gi"
+        volumeMounts:
+        - name: desktop-pv
+          mountPath: "/mnt/work-related"
 
 ---
 
@@ -130,5 +135,5 @@ spec:
     port: 8888
     targetPort: jenkins
   externalIPs:
-    - 34.75.250.107
+    - 104.197.203.64
 
