@@ -4,23 +4,15 @@ metadata:
   name: desktop-pv 
 spec:
   persistentVolumeReclaimPolicy: Delete
-  storageClassName: local-storage 
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-          - key: app
-            operator: In
-            values:
-            - desktop
+  storageClassName: nfs-storage
   capacity: 
    storage: 1Gi
   volumeMode: Filesystem
   accessModes: 
    - ReadWriteMany
   nfs:
-    path: /mnt/work-related
-    server: 104.197.203.64
+    server: $(hostname -i)
+    path: /tmp/work-related
 
 ---
 kind: PersistentVolumeClaim
@@ -29,7 +21,7 @@ metadata:
   name: desktop-pvc
 spec: 
   volumeName: desktop-pv
-  storageClassName: local-storage
+  storageClassName: nfs-storage
   resources:
     requests: 
       storage: 1Gi
