@@ -12,7 +12,7 @@ spec:
    - ReadWriteMany
   nfs:
     server: $(hostname -i)
-    path: /tmp/work-related
+    path: /mnt/work-related
 
 ---
 kind: PersistentVolumeClaim
