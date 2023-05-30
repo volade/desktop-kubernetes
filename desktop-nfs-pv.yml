@@ -11,7 +11,7 @@ spec:
   accessModes: 
    - ReadWriteMany
   nfs:
-    server: $(hostname -i)
+    server: 10.10.0.3
     path: /mnt/work-related
 
 ---
