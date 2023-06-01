@@ -18,6 +18,9 @@ spec:
       - name: desktop-pv
         persistentVolumeClaim:
           claimName: desktop-pvc
+      - name: jenkins-pv
+        persistentVolumeClaim:
+          claimName: jenkins-pvc
       containers:
       - name: desktop
         image: volade/desktop:latest
