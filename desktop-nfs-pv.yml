@@ -43,7 +43,7 @@ spec:
    - ReadWriteMany
   nfs:
     server: 10.10.0.11
-    path: /mnt/work-related/jenkins-default
+    path: /mnt/work-related/jenkins
 
 ---
 kind: PersistentVolumeClaim
