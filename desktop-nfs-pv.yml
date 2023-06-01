@@ -27,3 +27,34 @@ spec:
       storage: 1Gi
   accessModes:
     - ReadWriteMany
+
+---
+kind: PersistentVolume
+apiVersion: v1 
+metadata:
+  name: jenkins-pv
+spec:
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: nfs-storage
+  capacity: 
+   storage: 1Gi
+  volumeMode: Filesystem
+  accessModes: 
+   - ReadWriteMany
+  nfs:
+    server: 10.10.0.11
+    path: /mnt/work-related/jenkins
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: jenkins-pvc
+spec: 
+  volumeName: jenkins-pv
+  storageClassName: nfs-storage
+  resources:
+    requests: 
+      storage: 1Gi
+  accessModes:
+    - ReadWriteMany

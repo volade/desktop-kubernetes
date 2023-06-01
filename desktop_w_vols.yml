@@ -41,6 +41,8 @@ spec:
         volumeMounts:
         - name: desktop-pv
           mountPath: "/mnt/work-related"
+        - name: jenkins-pv
+          mountPath: "/var/lib/jenkins"
       - name: novnc
         image: volade/novnc:v3
         ports:
