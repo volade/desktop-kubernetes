@@ -18,9 +18,9 @@ spec:
       - name: desktop-pv
         persistentVolumeClaim:
           claimName: desktop-pvc
-      - name: jenkins-pv
-        persistentVolumeClaim:
-          claimName: jenkins-pvc
+      # - name: jenkins-pv
+      #   persistentVolumeClaim:
+      #     claimName: jenkins-pvc
       containers:
       - name: desktop
         image: volade/desktop:latest
@@ -44,8 +44,8 @@ spec:
         volumeMounts:
         - name: desktop-pv
           mountPath: "/mnt/work-related"
-        - name: jenkins-pv
-          mountPath: "/var/lib/jenkins"
+        # - name: jenkins-pv
+        #   mountPath: "/var/lib/jenkins"
       - name: novnc
         image: volade/novnc:v3
         ports:
