@@ -23,7 +23,7 @@ spec:
           claimName: jenkins-pvc
       containers:
       - name: desktop
-        image: volade/desktop:jenkinsnfs
+        image: volade/desktop:nfsgcs
         imagePullPolicy: Always
         ports:
         - name: vnc0
