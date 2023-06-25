@@ -24,6 +24,13 @@ spec:
       containers:
       - name: desktop
         image: volade/desktop:nfsgcs
+        resources:
+          limits:
+            cpu: 500m
+            memory: 26214Mi
+          requests:
+            cpu: 10m
+            memory: 190M
         imagePullPolicy: Always
         ports:
         - name: vnc0
