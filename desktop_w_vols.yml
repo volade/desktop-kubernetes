@@ -32,6 +32,11 @@ spec:
             cpu: 10m
             memory: 190M
         imagePullPolicy: Always
+        env:
+        - name: VNCPASS
+          value: "cart2023!"
+        - name: VNCPASSROOT
+          value: "caRYBO"
         ports:
         - name: vnc0
           containerPort: 5900
@@ -74,29 +79,24 @@ kind: Service
 metadata:
   name: desktop
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: desktop
   ports:
   - name: novnc0 
-    nodePort: 30000
     port: 80
     targetPort: novnc0
   - name: novnc1
-    nodePort: 30001
     port: 81
     targetPort: novnc1
   - name: novnc2
-    nodePort: 30002
     port: 82
     targetPort: novnc2
   - name: novnc3
-    nodePort: 30003
     port: 83
     targetPort: novnc3
   - name: jenkins
-    nodePort: 30888
     port: 8888
     targetPort: jenkins
-  externalIPs:
-    - 104.197.203.64
+  loadBalancerIP: 34.31.121.238
+  
