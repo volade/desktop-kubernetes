@@ -94,3 +94,7 @@ spec:
     port: 83
     targetPort: novnc3
   loadBalancerIP: 34.31.121.238
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 135e794d9a21ae09ae25e220b1f9ae9729eba252
