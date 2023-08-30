@@ -18,19 +18,16 @@ spec:
       - name: desktop-pv
         persistentVolumeClaim:
           claimName: desktop-pvc
-      - name: jenkins-pv
-        persistentVolumeClaim:
-          claimName: jenkins-pvc
       containers:
       - name: desktop
-        image: volade/desktop:jenkins
+        image: volade/desktop:nojenkins
         resources:
           limits:
-            cpu: 3000m
-            memory: 15616Mi
+            cpu: 500m
+            memory: 26214Mi
           requests:
             cpu: 10m
-            memory: 190Mi
+            memory: 190M
         imagePullPolicy: Always
         env:
         - name: VNCPASS
@@ -46,6 +43,8 @@ spec:
           containerPort: 5902
         - name: vnc3  
           containerPort: 5903
+        # - name: jenkins
+        #   containerPort: 8888
         securityContext:
           privileged: true
         resources:
@@ -54,8 +53,6 @@ spec:
         volumeMounts:
         - name: desktop-pv
           mountPath: "/mnt/work-related"
-        - name: jenkins-pv
-          mountPath: "/var/lib/jenkins"
       - name: novnc
         image: volade/novnc:v3
         ports:
@@ -70,6 +67,48 @@ spec:
         resources:
           requests:
             ephemeral-storage: "100Mi"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins
+  labels:
+    app: desktop-jenkins
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: desktop-jenkins
+  template:
+    metadata:
+      labels:
+        app: desktop-jenkins
+    spec:
+      volumes:
+      - name: jenkins-pv
+        persistentVolumeClaim:
+          claimName: jenkins-pvc
+      - name: desktop-pv
+        persistentVolumeClaim:
+          claimName: desktop-pvc
+      containers:
+      - name: jenkins
+        image: volade/jenkins:custom
+        imagePullPolicy: Always
+        ports:
+        - name: jenkins-master
+          containerPort: 8080
+        - name: jenkins-agent
+          containerPort: 50000
+        volumeMounts:
+        - name: jenkins-pv
+          mountPath: "/var/jenkins_home"
+        - name: desktop-pv
+          mountPath: "/mnt/work-related"
+        securityContext:
+          privileged: true
 
 ---
 apiVersion: v1
@@ -93,4 +132,10 @@ spec:
   - name: novnc3
     port: 83
     targetPort: novnc3
+  - name: jenkins-master
+    port: 8080
+    targetPort: jenkins-master
+  - name: jenkins-agent
+    port: 50000
+    targetPort: jenkins-agent
   loadBalancerIP: 34.31.121.238
