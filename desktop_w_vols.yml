@@ -26,11 +26,11 @@ spec:
         image: volade/desktop:jenkins
         resources:
           limits:
-            cpu: 3000m
-            memory: 15616Mi
+            cpu: 4000m
+            memory: 16384Mi
           requests:
-            cpu: 10m
-            memory: 190Mi
+            cpu: 3000m
+            memory: 8192Mi
         imagePullPolicy: Always
         env:
         - name: VNCPASS
