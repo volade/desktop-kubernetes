@@ -305,6 +305,8 @@ spec:
         - name: tmp-volume
           emptyDir: {}
 
+---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -361,13 +363,16 @@ spec:
 status:
   loadBalancer: {}
 
+---
 
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: admin-user
   namespace: kubernetes-dashboard
+
 ---
+
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
