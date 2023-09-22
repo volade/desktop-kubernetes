@@ -1,0 +1,17 @@
+kind: Addons
+metadata:
+  name: kubernetes-dashboard
+spec:
+  addons:
+  - version: 0.3.6
+    selector:
+      k8s-addon: kubernetes-dashboard.addons.k8s.io
+    id: pre-k8s-1-16
+    kubernetesVersion: "<1.16.0"
+    manifest: v2.7.0.yaml
+  - version: 0.3.6
+    selector:
+      k8s-addon: kubernetes-dashboard.addons.k8s.io
+    manifest: v2.7.0.yaml
+    id: k8s-1-16
+    kubernetesVersion: ">=1.16.0"
